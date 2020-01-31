@@ -1,3 +1,107 @@
 ---
 burrow::version: '1.3.2'
 burrow::config_file: '/etc/burrow/config'
+
+burrow::pidfile: '/var/run/burrow.pid'
+burrow::stdout_logfile: ''
+burrow::access_control_allow_origin: ''
+
+burrow::logging_filename: ''
+burrow::logging_level: 'info'
+burrow::logging_maxsize: 100
+burrow::logging_maxbackups: 10
+burrow::logging_maxage: 30
+burrow::logging_use_localtime: false
+burrow::logging_use_compression: false
+
+burrow::zookeeper_servers: []
+burrow::zookeeper_timeout: 6
+burrow::zookeeper_root_path: '/burrow/notifier'
+
+burrow::manage_client_profile: false
+burrow::client_subheading: 'myclient' *
+burrow::client_kafka_version: '0.8' *
+burrow::client_id: 'burrow-lagchecker'
+burrow::client_tls: ''
+burrow::client_sasl: ''
+
+burrow::manage_tls_profile: false
+burrow::tls_subheading: 'mytlsprofile' *
+burrow::tls_certfile: '' *
+burrow::tls_keyfile: '' *
+burrow::tls_cafile: ''
+burrow::tls_no_verify: false
+
+burrow::manage_sasl_profile: false
+burrow::sasl_subheading: 'mysaslprofile' *
+burrow::sasl_username: '' *
+burrow::sasl_password: '' *
+burrow::sasl_handshake_first: true
+
+burrow::manage_httpserver_profile: false
+burrow::httpserver_subheading: 'mylistener' *
+burrow::httpserver_address: '' *
+burrow::httpserver_timeout: 300
+burrow::httpserver_tls: ''
+
+burrow::manage_storage_profile: false
+burrow::storage_subheading: 'mystorage' *
+burrow::storage_class_name: 'inmemory' *
+burrow::storage_intervals: 10
+burrow::storage_expire_group: 604800
+burrow::storage_workers: 20
+burrow::storage_min_distance: 0
+burrow::storage_group_whitelist: ''
+
+burrow::manage_evaluator_profile: false
+burrow::evaluator_subheading: 'myeval' *
+burrow::evaluator_class_name: 'caching' *
+burrow::evaluator_expire_cache: 604800
+burrow::evaluator_minimum_complete: '0.0'
+
+burrow::cluster_subheading: 'mycluster' *
+burrow::cluster_class_name: 'kafka' *
+burrow::cluster_servers: [] *
+burrow::cluster_client_profile: ''
+burrow::cluster_topic_refresh: 60
+burrow::cluster_offset_refresh: 10
+
+burrow::consumer_subheading: 'myconsumer' *
+burrow::consumer_class_name: '' *
+burrow::consumer_cluster_name: '' *
+burrow::consumer_servers: [] *
+burrow::consumer_kafka_client_profile:
+burrow::consumer_kafka_offsets_topic: '__consumer_offsets'
+burrow::consumer_kafka_start_latest: false
+burrow::consumer_kafka_group_whitelist: ''
+burrow::consumer_kafka_group_blacklist: ''
+burrow::consumer_kafka_zk_zookeeper_timeout: 30
+burrow::consumer_kafka_zk_zookeeper_path: ''
+burrow::consumer_kafka_zk_group_whitelist: ''
+burrow::consumer_kafka_zk_group_blacklist: ''
+
+burrow::manage_notifier_profile: false
+burrow::notifier_subheading: 'mynotify' *
+burrow::notifier_class_name: '' *
+burrow::notifier_interval: 60
+burrow::notifier_threshold: 2
+burrow::notifier_group_whitelist: ''
+burrow::notifier_group_blacklist: ''
+burrow::notifier_extras: {}
+burrow::notifier_send_close: false
+burrow::notifier_template_open: '' *
+burrow::notfier_template_close: ''
+burrow::notifier_headers: {}
+burrow::notifier_http_url_open: '' *
+burrow::notifier_http_method_open: 'POST'
+burrow::notifier_http_url_close: ''
+burrow::notifier_http_method_close: 'POST'
+burrow::notifier_http_timeout: 5
+burrow::notifier_http_keepalive: 300
+burrow::notifier_email_server: '' *
+burrow::notifier_email_port: 0 *
+burrow::notifier_email_from: '' *
+burrow::notifier_email_to: '' *
+burrow::notifier_email_auth_type: ''
+burrow::notifier_email_username: ''
+burrow::notifier_email_password: ''
