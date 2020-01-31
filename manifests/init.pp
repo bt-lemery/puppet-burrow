@@ -7,8 +7,13 @@
 #
 # @version
 #   Version of the burrow package to install.  Defaults to 1.3.2.
+#
+# @config_file
+#   Path and name for burrow config file.  Defaults to '/etc/burrow/config'.
+#
 class burrow (
-  $version,
+  String $version,
+  String $config_file,
 ){
 
   class{'burrow::install':
@@ -16,6 +21,7 @@ class burrow (
   }
 
   class { 'burrow::config':
+    config_file => $config_file,
   }
 
   class { 'burrow::service':

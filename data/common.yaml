@@ -1,2 +1,3 @@
 ---
 burrow::version: '1.3.2'
+burrow::config_file: '/etc/burrow/config'
