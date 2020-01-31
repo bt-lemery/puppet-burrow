@@ -8,11 +8,17 @@
 # @version
 #   Version of the burrow package to install.  Defaults to 1.3.2.
 class burrow (
-  String $version,
+  $version,
 ){
 
   class{'burrow::install':
     version => $version,
+  }
+
+  class { 'burrow::config':
+  }
+
+  class { 'burrow::service':
   }
 
   Class['burrow::install']
