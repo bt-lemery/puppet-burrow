@@ -160,17 +160,44 @@
 #   A minimum threshold for completeness for evaluating partitions: any partition which has a completeness below this value will be marked as OK without evaluating it.
 #   Defaults to '0.0'
 #
-  Boolean $manage_evaluator_profile,
-  Data $evaluator_subheading,
-  String $evaluator_class_name,
-  Integer $evaluator_expire_cache,
-  Data $evaluator_minimum_complete,
-
+# @manage_cluster_profile
+#   It is not required to specify a cluster profile, but if you don't you won't have Burrow doing any work.  Defaults to true.
+#
+# @cluster_subheading
+#   Unique subheading name for cluster profile.  Defaults to 'mycluster'.
+#
+# @cluster_class_name
+#   Name of cluster module. The only permitted value is 'kafka'.
+#
+# @cluster_servers
+#   An array of strings in the form "hostname:port" that point to the servers in the Kafka cluster. At least one is required.
+#
+# @cluster_client_profile
+#   The name of a configured client-profile section. If no profile is specified, a default configuration for the client will be used. Defaults to ''.
+#
+# @cluster_topic_refresh
+#   How often to refresh the list of all topics in the cluster, in seconds. Defaults to 60.
+#
+# @cluster_offset_refresh
+#   How often to refresh the broker offset for each partition, in seconds. Defaults to 10.
+#
+# @manage_consumers
+#   It is not required to specify this section, but if you don't you won't have Burrow doing much work. Defaults to true.
+#
+# @consumers
+#   An array of consumers.
+#
+# @manage_notifiers
+#   Defaults to false.
+#
+# @notifiers
+#   An array of notifiers.
+#
 class burrow (
   String $version,
   String $config_file,
-  Enum['kafka', 'kafka_zk'] $consumer_class_name,
-  Enum['http', 'email'] $notifiers_class_name,
+  Array[String] $consumer_class_name,
+  Array[String] $notifiers_class_name,
   Data $pidfile,
   Data $stdout_logfile,
   String $access_control_allow_origin,
@@ -228,53 +255,17 @@ class burrow (
   Integer $evaluator_expire_cache,
   Data $evaluator_minimum_complete,
 
-#burrow::cluster_subheading: 'mycluster' *
-#burrow::cluster_class_name: 'kafka' *
-#burrow::cluster_servers: [] *
-#burrow::cluster_client_profile: ''
-#burrow::cluster_topic_refresh: 60
-#burrow::cluster_offset_refresh: 10
-#
-#burrow::consumer_subheading: 'myconsumer' *
-#burrow::consumer_class_name: '' *
-#burrow::consumer_cluster_name: '' *
-#burrow::consumer_servers: [] *
-#burrow::consumer_kafka_client_profile:
-#burrow::consumer_kafka_offsets_topic: '__consumer_offsets'
-#burrow::consumer_kafka_start_latest: false
-#burrow::consumer_kafka_group_whitelist: ''
-#burrow::consumer_kafka_group_blacklist: ''
-#burrow::consumer_kafka_zk_zookeeper_timeout: 30
-#burrow::consumer_kafka_zk_zookeeper_path: ''
-#burrow::consumer_kafka_zk_group_whitelist: ''
-#burrow::consumer_kafka_zk_group_blacklist: ''
-#
-#burrow::manage_notifier_profile: false
-#burrow::notifier_subheading: 'mynotify' *
-#burrow::notifier_class_name: '' *
-#burrow::notifier_interval: 60
-#burrow::notifier_threshold: 2
-#burrow::notifier_group_whitelist: ''
-#burrow::notifier_group_blacklist: ''
-#burrow::notifier_extras: {}
-#burrow::notifier_send_close: false
-#burrow::notifier_template_open: '' *
-#burrow::notfier_template_close: ''
-#burrow::notifier_headers: {}
-#burrow::notifier_http_url_open: '' *
-#burrow::notifier_http_method_open: 'POST'
-#burrow::notifier_http_url_close: ''
-#burrow::notifier_http_method_close: 'POST'
-#burrow::notifier_http_timeout: 5
-#burrow::notifier_http_keepalive: 300
-#burrow::notifier_email_server: '' *
-#burrow::notifier_email_port: 0 *
-#burrow::notifier_email_from: '' *
-#burrow::notifier_email_to: '' *
-#burrow::notifier_email_auth_type: ''
-#burrow::notifier_email_username: ''
-#burrow::notifier_email_password: ''
-
+  Boolean $manage_cluster_profile,
+  Data $cluster_subheading,
+  String $cluster_class_name,
+  Array[String] $cluster_servers,
+  String $cluster_client_profile,
+  Integer $cluster_topic_refresh,
+  Integer $cluster_offset_refresh,
+  Boolean $manage_consumers,
+  Array[Data] $consumers,
+  Boolean $manage_notifiers,
+  Array[Data] $notifiers,
 ){
 
   if empty($zookeeper_servers) {
@@ -282,13 +273,13 @@ class burrow (
   } 
 
   if $manage_tls_profile {
-    if empty(tls_certfile) or empty (tls_keyfile) {
+    if empty($tls_certfile) or empty ($tls_keyfile) {
       fail("You must set a value for tls_certfile or tls_keyfile!")
     }
   }
 
   if $manage_sasl_profile {
-    if empty(sasl_username) or empty (sasl_password) {
+    if empty($sasl_username) or empty ($sasl_password) {
       fail("You must set a value for sasl_username or sasl_password!")
     }
   }
@@ -308,6 +299,12 @@ class burrow (
   if $manage_evaluator_profile {
     if empty($evaluator_class_name) {
       fail("You must set a value for evaluator_class_name!")
+    }
+  }
+
+  if $manage_cluster_profile {
+    if empty($cluster_class_name) or empty($cluster_servers) {
+      fail("You must set a value for cluster_class_name or cluster_servers!")
     }
   }
 
