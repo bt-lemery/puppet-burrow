@@ -49,6 +49,7 @@ burrow::evaluator_subheading: 'myeval'
 burrow::evaluator_class_name: 'caching'
 burrow::evaluator_expire_cache: 604800
 burrow::evaluator_minimum_complete: '0.0'
+burrow::manage_cluster_profile: true
 burrow::cluster_subheading: 'mycluster'
 burrow::cluster_class_name: 'kafka'
 burrow::cluster_servers: []
