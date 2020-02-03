@@ -146,12 +146,20 @@ class burrow::config (
     'default-slack-post.tmpl',
   ]
 
+  file { $config_file_dir:
+    ensure => directory,
+    owner  => 'root',
+    group  => 'root',
+    mode   => '0644',
+  }
+
   $_default_templates.each |$template| {
     file { "${config_file_dir}/${template}":
-      owner  => 'root',
-      group  => 'root',
-      mode   => '0755',
-      source => "puppet:///modules/burrow/${template}",
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0755',
+      source  => "puppet:///modules/burrow/${template}",
+      require => File[$config_file_dir],
     }
   }
 
