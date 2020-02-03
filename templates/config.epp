@@ -164,3 +164,121 @@ expire-cache=<%= $evaluator_expire_cache %>
 minimum-complete=<%= $evaluator_minimum_complete %>
 <% } -%>
 <% } -%>
+
+<% if $manage_cluster_profile { -%>
+[cluster.<%= $cluster_subheading %>]
+class-name="<%= $cluster_class_name %>"
+servers=<%= $cluster_servers %>
+<% if ! empty($cluster_client_profile) { -%>
+client-profile="<%= $cluster_client_profile %>"
+<% } -%>
+<% if ! empty($cluster_topic_refresh) { -%>
+topic-refresh=<%= $cluster_topic_refresh %>
+<% } -%>
+<% if ! empty($cluster_offset_refresh) { -%>
+offset-refresh=<%= $cluster_offset_refresh %>
+<% } -%>
+<% } -%>
+
+<% if $manage_consumers { -%>
+<% [$consumers].flatten.each |$consumer| { -%>
+[consumer.<%= $consumer[subheading] %>]
+<% if $consumer[class-name] { -%>
+class-name="<%= $consumer[class-name] %>"
+<% } -%>
+<% if $consumer[cluster] { -%>
+cluster="<%= $consumer[cluster] %>"
+<% } -%>
+<% if $consumer[servers] { -%>
+servers=<%= $consumer[servers] %>
+<% } -%>
+<% if $consumer[client-profile] { -%>
+client-profile="<%= $consumer[client-profile] %>"
+<% } -%>
+<% if $consumer[offsets-topic] { -%>
+offsets-topic="<%= $consumer[offsets-topic] %>"
+<% } -%>
+<% if $consumer[start-latest] { -%>
+start-latest=<%= $consumer[start-latest] %>
+<% } -%>
+<% if $consumer[zookeeper-timeout] { -%>
+zookeeper-timeout=<%= $consumer[zookeeper-timeout] %>
+<% } -%>
+<% if $consumer[zookeeper-path] { -%>
+zookeeper-path="<%= $consumer[zookeeper-path] %>"
+<% } -%>
+<% if $consumer[group-whitelist] { -%>
+group-whitelist="<%= $consumer[group-whitelist] %>"
+<% } -%>
+<% if $consumer[group-blacklist] { -%>
+group-blacklist="<%= $consumer[group-blacklist] %>"
+<% } -%>
+
+<% } -%>
+<% } -%>
+<% if $manage_notifiers { -%>
+<% [$notifiers].flatten.each |$notifier| { -%>
+[notifier.<%= $notifier[subheading] %>]
+<% if $notifier[class-name] { -%>
+class-name="<%= $notifier[class-name] %>"
+<% } -%>
+<% if $notifier[interval] { -%>
+interval=<%= $notifier[interval] %>
+<% } -%>
+<% if $notifier[threshold] { -%>
+interval=<%= $notifier[threshold] %>
+<% } -%>
+<% if $notifier[group-whitelist] { -%>
+group-whitelist="<%= $notifier[group-whitelist] %>"
+<% } -%>
+<% if $notifier[group-blacklist] { -%>
+group-blacklist="<%= $notifier[group-blacklist] %>"
+<% } -%>
+<% if $notifier[extras] { -%>
+extras=<%= $notifier[extras] %>
+<% } -%>
+<% if $notifier[send-close] { -%>
+send-close=<%= $notifier[send-close] %>
+<% } -%>
+<% if $notifier[template-open] { -%>
+template-open="<%= $notifier[template-open] %>"
+<% } -%>
+<% if $notifier[template-close] { -%>
+template-close="<%= $notifier[template-close] %>"
+<% } -%>
+<% if $notifier[url-open] { -%>
+url-open="<%= $notifier[url-open] %>"
+<% } -%>
+<% if $notifier[method-open] { -%>
+method-open="<%= $notifier[method-open] %>"
+<% } -%>
+<% if $notifier[timeout] { -%>
+timeout=<%= $notifier[timeout] %>
+<% } -%>
+<% if $notifier[keepalive] { -%>
+keepalive=<%= $notifier[keepalive] %>
+<% } -%>
+<% if $notifier[server] { -%>
+server="<%= $notifier[server] %>"
+<% } -%>
+<% if $notifier[port] { -%>
+port=<%= $notifier[port] %>
+<% } -%>
+<% if $notifier[from] { -%>
+from="<%= $notifier[from] %>"
+<% } -%>
+<% if $notifier[to] { -%>
+to="<%= $notifier[to] %>"
+<% } -%>
+<% if $notifier[auth-type] { -%>
+auth-type="<%= $notifier[auth-type] %>"
+<% } -%>
+<% if $notifier[username] { -%>
+username="<%= $notifier[username] %>"
+<% } -%>
+<% if $notifier[password] { -%>
+password="<%= $notifier[password] %>"
+<% } -%>
+
+<% } -%>
+<% } -%>
