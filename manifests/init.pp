@@ -301,8 +301,8 @@ class burrow (
   }
 
   if $manage_cluster_profile {
-    if empty($cluster_class_name) or empty($cluster_servers) {
-      fail("You must set a value for cluster_class_name or cluster_servers!")
+    if empty($cluster_servers) {
+      fail("You must set a value for cluster_servers!")
     }
   }
 
