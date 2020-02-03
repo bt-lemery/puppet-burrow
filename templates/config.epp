@@ -59,3 +59,16 @@
   $manage_notifiers,
   $notifiers,
 | -%>
+[general]
+pidfile="<%= $pidfile %>"
+stdout-logfile="<%= $stdout_logfile %>"
+access-control-allow-origin="<%= $access_control_allow_origin %>"
+
+[logging]
+filename="<%= $logging_filename %>"
+level="<%= $logging_level %>"
+maxsize=<%= $logging_maxsize %>
+maxbackups=<%= $logging_maxbackups %>
+maxage=<%= $logging_maxage %>
+use-localtime=<%= $logging_use_localtime %>
+use-compression=<%= $logging_use_compression %>
