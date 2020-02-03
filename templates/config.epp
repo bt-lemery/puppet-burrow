@@ -122,3 +122,45 @@ password="<%= $sasl_password %>"
 handshake-first=<%= $sasl_handshake_first %>
 <% } -%>
 <% } -%>
+
+<% if $manage_httpserver_profile { -%>
+[httpserver.<%= $httpserver_subheading %>]
+address="<%= $httpserver_address %>"
+<% if ! empty($httpserver_timeout) { -%>
+timeout=<%= $httpserver_timeout %>
+<% } -%>
+<% if ! empty($httpserver_tls) { -%>
+tls="<%= $httpserver_tls %>"
+<% } -%>
+<% } -%>
+
+<% if $manage_storage_profile { -%>
+[storage.<%= $storage_subheading %>]
+class-name="<%= $storage_class_name %>"
+<% if ! empty($storage_intervals) { -%>
+intervals=<%= $storage_intervals %>
+<% } -%>
+<% if ! empty($storage_expire_group) { -%>
+expire-group=<%= $storage_expire_group %>
+<% } -%>
+<% if ! empty($storage_workers) { -%>
+workers=<%= $storage_workers %>
+<% } -%>
+<% if $storage_min_distance { -%>
+min-distance=<%= $storage_min_distance %>
+<% } -%>
+<% if ! empty($storage_group_whitelist) { -%>
+group-whitelist="<%= $storage_group_whitelist %>"
+<% } -%>
+<% } -%>
+
+<% if $manage_evaluator_profile { -%>
+[evaluator.<%= $evaluator_subheading %>]
+class-name="<%= $evaluator_class_name %>"
+<% if ! empty($evaluator_expire_cache) { -%>
+expire-cache=<%= $evaluator_expire_cache %>
+<% } -%>
+<% if ! empty($evaluator_minimum_complete) { -%>
+minimum-complete=<%= $evaluator_minimum_complete %>
+<% } -%>
+<% } -%>
