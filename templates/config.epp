@@ -61,14 +61,64 @@
 | -%>
 [general]
 pidfile="<%= $pidfile %>"
+<% if ! empty($stdout_logfile) { -%>
 stdout-logfile="<%= $stdout_logfile %>"
+<% } -%>
+<% if ! empty($access_control_allow_origin) { -%>
 access-control-allow-origin="<%= $access_control_allow_origin %>"
+<% } -%>
 
 [logging]
+<% if ! empty($logging_filename) { -%>
 filename="<%= $logging_filename %>"
+<% } -%>
 level="<%= $logging_level %>"
 maxsize=<%= $logging_maxsize %>
 maxbackups=<%= $logging_maxbackups %>
 maxage=<%= $logging_maxage %>
-use-localtime=<%= $logging_use_localtime %>
+<% if $logging_use_localtime { %>
+use-localtime=<%= $logging_use_localtime -%>
+<% } -%>
+<% if $logging_use_compression { -%>
 use-compression=<%= $logging_use_compression %>
+<% } -%>
+
+[zookeeper]
+servers=<%= $zookeeper_servers %>
+timeout=<%= $zookeeper_timeout %>
+root-path="<%= $zookeeper_root_path %>"
+
+<% if $manage_client_profile { -%>
+[client-profile.<%= $client_subheading %>]
+kafka-version="<%= $client_kafka_version %>"
+<% if ! empty($client_id) { -%>
+client-id="<%= $client_id %>"
+<% } -%>
+<% if ! empty($client_tls) { -%>
+tls="<%= $client_tls %>"
+<% } -%>
+<% if ! empty($client_sasl) { -%>
+sasl="<%= $client_sasl %>"
+<% } -%>
+<% } -%>
+
+<% if $manage_tls_profile { -%>
+[tls.<%= $tls_subheading %>]
+certfile="<%= $tls_certfile %>"
+keyfile="<%= $tls_keyfile %>"
+<% if ! empty($tls_cafile) { -%>
+cafile="<%= $tls_cafile %>"
+<% } -%>
+<% if $tls_no_verify { -%>
+no-verify=<%= $tls_no_verify %>
+<% } -%>
+<% } -%>
+
+<% if $manage_sasl_profile { -%>
+[sasl.<%= $sasl_subheading %>]
+username="<%= $sasl_username %>"
+password="<%= $sasl_password %>"
+<% if $sasl_handshake_first { -%>
+handshake-first=<%= $sasl_handshake_first %>
+<% } -%>
+<% } -%>
