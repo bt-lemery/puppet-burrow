@@ -1,8 +1,6 @@
 # burrow
 
-Welcome to your new module. A short overview of the generated parts can be found in the PDK documentation at https://puppet.com/pdk/latest/pdk_generating_modules.html .
-
-The README template below provides a starting point with details about what information to include in your README.
+This module will install and configure LinkedIn's Burrow.  It assumes an RPM is available (will support archive-based installations at a later date).
 
 #### Table of Contents
 
@@ -17,71 +15,123 @@ The README template below provides a starting point with details about what info
 
 ## Description
 
-Briefly tell users why they might want to use your module. Explain what your module does and what kind of problems users can solve with it.
-
-This should be a fairly short description helps the user decide if your module is what they want.
+Install and configure Burrow.
 
 ## Setup
 
-### What burrow affects **OPTIONAL**
+### What burrow affects
 
-If it's obvious what your module touches, you can skip this section. For example, folks can probably figure out that your mysql_instance module affects their MySQL instances.
+Currently, this module will install Burrow from an RPM and customize a config file.  Later we will support an archive-based installation and the ability to run Burrow as a service.
 
-If there's more that they should know about, though, this is the place to mention:
+### Setup Requirements
 
-* Files, packages, services, or operations that the module will alter, impact, or execute.
-* Dependencies that your module automatically installs.
-* Warnings or other important notices.
-
-### Setup Requirements **OPTIONAL**
-
-If your module requires anything extra before setting up (pluginsync enabled, another module, etc.), mention it here.
-
-If your most recent release breaks compatibility or requires particular steps for upgrading, you might want to include an additional "Upgrading" section here.
+This module assumes you have an RPM of Burrow available.
 
 ### Beginning with burrow
 
-The very basic steps needed for a user to get the module up and running. This can include setup steps, if necessary, or it can be an example of the most basic use of the module.
+You should be able to use this module to install and config Burrow with a minimal set of parameters:
+
+```
+class {'::burrow':
+  zookeeper_servers      => [ 'localhost:2081', 'localhost:2082', 'localhost:2083', ],
+  manage_cluster_profile => true,
+  cluster_servers        => [ 'localhost:3000', 'localhost:3001', ],
+   manage_consumers      => true,
+   consumers             => [
+     {
+       'subheading'      => 'local',
+       'class-name'      => 'kafka',
+       'cluster'         => 'foo',
+       'servers'         => [ 'localhost:3001', 'localhost:3001' ],
+       'group-blacklist' => "^(console-consumer-|python-kafka-consumer-|quick-).*$",
+       'group-whitelist' => "",
+       'client-profile'  => "test",
+     },
+   ],
+}
+```
 
 ## Usage
 
-Include usage examples for common use cases in the **Usage** section. Show your users how to use your module to solve problems, and be sure to include code examples. Include three to five examples of the most important or common tasks a user can accomplish with your module. Show users how to accomplish more complex tasks that involve different types, classes, and functions working in tandem.
-
-## Reference
-
-This section is deprecated. Instead, add reference information to your code as Puppet Strings comments, and then use Strings to generate a REFERENCE.md in your module. For details on how to add code comments and generate documentation with Strings, see the Puppet Strings [documentation](https://puppet.com/docs/puppet/latest/puppet_strings.html) and [style guide](https://puppet.com/docs/puppet/latest/puppet_strings_style.html)
-
-If you aren't ready to use Strings yet, manually create a REFERENCE.md in the root of your module directory and list out each of your module's classes, defined types, facts, functions, Puppet tasks, task plans, and resource types and providers, along with the parameters for each.
-
-For each element (class, defined type, function, and so on), list:
-
-  * The data type, if applicable.
-  * A description of what the element does.
-  * Valid values, if the data type doesn't make it obvious.
-  * Default value, if any.
-
-For example:
+A complex example:
 
 ```
-### `pet::cat`
-
-#### Parameters
-
-##### `meow`
-
-Enables vocalization in your cat. Valid options: 'string'.
-
-Default: 'medium-loud'.
+ class { '::burrow':
+   version                   => '1.3.2',
+   zookeeper_servers         => [ 'localhost:2081', 'localhost:2082', 'localhost:2083', ],
+   manage_client_profile     => true,
+   manage_tls_profile        => true,
+   tls_certfile              => '/etc/pki/tls/mycert.cert',
+   tls_keyfile               => '/etc/pki/tls/private/mykey.key',
+   manage_sasl_profile       => true,
+   sasl_username             => 'myuser',
+   sasl_password             => 'secret',
+   manage_httpserver_profile => true,
+   httpserver_address        => ':8080',
+   manage_storage_profile    => true,
+   manage_evaluator_profile  => true,
+   manage_cluster_profile    => true,
+   cluster_servers           => [ 'localhost:3000', 'localhost:3001', ],
+   manage_consumers          => true,
+   consumers                 => [
+     {
+       'subheading'      => 'local',
+       'class-name'      => 'kafka',
+       'cluster'         => 'foo',
+       'servers'         => [ 'localhost:3001', 'localhost:3001' ],
+       'group-blacklist' => "^(console-consumer-|python-kafka-consumer-|quick-).*$",
+       'group-whitelist' => "",
+       'client-profile'  => "test",
+     },
+     {
+       'subheading'        => 'local_zk',
+       'class-name'        => 'kafka_zk',
+       'cluster'           => 'foo',
+       'servers'           => [ 'localhost:2081', 'localhost:2082', 'localhost:2083', ],
+       'group-blacklist'   => "^(console-consumer-|python-kafka-consumer-|quick-).*$",
+       'group-whitelist'   => "",
+       'zookeeper-path'    => "/kafka-cluster",
+       'zookeeper-timeout' => 30,
+     },
+   ],
+   manage_notifiers          => true,
+   notifiers                 => [
+     {
+       'subheading'      => 'tellme',
+       'class-name'      => 'http',
+       'interval'        => 60,
+       'threshold'       => 2,
+       'group-whitelist' => "",
+       'group-blacklist' => "^not-this-group$",
+       'extras'          => "{ api_key=\"REDACTED\", app=\"burrow\", tier=\"STG\", fabric=\"mydc\" }",
+       'send-close'      => false,
+       'template-open'   => '/etc/burrow/default-http-post.tmpl',
+       'template-close'  => '/etc/burrow/default-http-delete.tmpl',
+       'url-open'        => "http://someservice.example.com:1467/v1/event",
+       'method-open'     => "POST",
+       'method-close'    => "DELETE",
+       'timeout'         => 5,
+       'keepalive'       => 30,
+     },
+     {
+       'subheading'      => 'emailme',
+       'class-name'      => 'email',
+       'interval'        => 60,
+       'threshold'       => 3,
+       'group-whitelist' => "^important-group-prefix.*$",
+       'group-blacklist' => "^not-this-group$",
+       'extras'          => "{ key1=\"value1\", key2=\"value2\" }",
+       'send-close'      => false,
+       'template-open'   => '/etc/burrow/default-email-open.tmpl',
+       'template-close'  => '/etc/burrow/default-email-close.tmpl',
+       'server'          => 'smtp.example.org',
+       'port'            => 25,
+       'from'            => 'notifier@example.org',
+       'to'              => 'notifications@example.org',
+       'auth-type'       => 'plain',
+       'username'        => 'kafka',
+       'password'        => 'secret',
+     },
+   ],
+ }
 ```
-
-## Limitations
-
-In the Limitations section, list any incompatibilities, known issues, or other warnings.
-
-## Development
-
-In the Development section, tell other users the ground rules for contributing to your project and how they should submit their work.
-
-## Release Notes/Contributors/Etc. **Optional**
-
-If you aren't using changelog, put your release notes here (though you should consider using changelog). You can also add any additional sections you feel are necessary or important to include here. Please use the `## ` header.
