@@ -5,6 +5,8 @@
 # @example
 #   include burrow::config
 class burrow::config (
+  $user,
+  $group,
   $config_file,
   $pidfile,
   $stdout_logfile,
@@ -130,8 +132,8 @@ class burrow::config (
   }
 
   file { $config_file:
-    owner => 'root',
-    group => 'root',
+    owner => $user,
+    group => $group,
     mode  => '0644',
     content => epp('burrow/config.epp', $_config),
   }
@@ -148,15 +150,15 @@ class burrow::config (
 
   file { $config_file_dir:
     ensure => directory,
-    owner  => 'root',
-    group  => 'root',
+    owner  => $user,
+    group  => $group,
     mode   => '0644',
   }
 
   $_default_templates.each |$template| {
     file { "${config_file_dir}/${template}":
-      owner   => 'root',
-      group   => 'root',
+      owner   => $user,
+      group   => $group,
       mode    => '0755',
       source  => "puppet:///modules/burrow/${template}",
       require => File[$config_file_dir],

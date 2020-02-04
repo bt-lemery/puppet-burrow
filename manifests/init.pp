@@ -8,6 +8,12 @@
 # @param version
 #   Version of the burrow package to install.  Defaults to 1.3.2.
 #
+# @param user
+#   User for file ownership/service.  Defaults to 'root'.
+#
+# @param group
+#   Group for file ownership/service. Defaults to 'root'.
+#
 # @param config_file
 #   Path and name for burrow config file.  Defaults to '/etc/burrow/config'.
 #
@@ -195,11 +201,12 @@
 #
 class burrow (
   String $version,
+  String $user,
+  String $group,
   String $config_file,
   Data $pidfile,
   Data $stdout_logfile,
   String $access_control_allow_origin,
-
   Data $logging_filename,
   Enum['debug', 'info', 'warn', 'error', 'panic', 'fatal'] $logging_level,
   Integer $logging_maxsize,
@@ -207,37 +214,31 @@ class burrow (
   Integer $logging_maxage,
   Boolean $logging_use_localtime,
   Boolean $logging_use_compression,
-
   Array[String] $zookeeper_servers,
   Integer $zookeeper_timeout,
   Data $zookeeper_root_path,
-
   Boolean $manage_client_profile,
   Data $client_subheading,
   Data $client_kafka_version,
   String $client_id,
   String $client_tls,
   String $client_sasl,
-
   Boolean $manage_tls_profile,
   Data $tls_subheading,
   Data $tls_certfile,
   Data $tls_keyfile,
   Data $tls_cafile,
   Boolean $tls_no_verify,
-
   Boolean $manage_sasl_profile,
   Data $sasl_subheading,
   String $sasl_username,
   Data $sasl_password,
   Boolean $sasl_handshake_first,
-
   Boolean $manage_httpserver_profile,
   Data $httpserver_subheading,
   String $httpserver_address,
   Integer $httpserver_timeout,
   String $httpserver_tls,
-
   Boolean $manage_storage_profile,
   Data $storage_subheading,
   String $storage_class_name,
@@ -246,13 +247,11 @@ class burrow (
   Integer $storage_workers,
   Integer $storage_min_distance,
   Data $storage_group_whitelist,
-
   Boolean $manage_evaluator_profile,
   Data $evaluator_subheading,
   String $evaluator_class_name,
   Integer $evaluator_expire_cache,
   Data $evaluator_minimum_complete,
-
   Boolean $manage_cluster_profile,
   Data $cluster_subheading,
   String $cluster_class_name,
@@ -312,6 +311,8 @@ class burrow (
 
   class { 'burrow::config':
     config_file                 => $config_file,
+    user                        => $user,
+    group                       => $group,
     pidfile                     => $pidfile,
     stdout_logfile              => $stdout_logfile,
     access_control_allow_origin => $access_control_allow_origin,

@@ -1,5 +1,7 @@
 ---
 burrow::version: '1.3.2'
+burrow::user: 'root'
+burrow::group: 'root'
 burrow::config_file: '/etc/burrow/config'
 burrow::pidfile: '/var/run/burrow.pid'
 burrow::stdout_logfile: ''
