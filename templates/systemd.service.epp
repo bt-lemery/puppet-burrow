@@ -1,0 +1,20 @@
+<%- |
+  String $user,
+  String $group,
+  String $config_dir,
+  String $pidfile,
+| -%>
+[Unit]
+Description=LinkedIn Burrow
+[Install]
+WantedBy=multi-user.target
+[Service]
+ExecStart=/usr/local/bin/burrow --config-dir <%= $config_dir %>
+ExecStop=/bin/kill -s SIGTERM $MAINPID
+User=<%= $user %>
+Group=<%= $group %>
+PIDFile=<%= $pidfile %>
+Type=simple
+PermissionsStartOnly=false
+TimeoutStopSec=5
+PrivateTmp=no

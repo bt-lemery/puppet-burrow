@@ -2,7 +2,7 @@
 burrow::version: '1.3.2'
 burrow::user: 'root'
 burrow::group: 'root'
-burrow::config_file: '/etc/burrow/config'
+burrow::config_dir: '/etc/burrow'
 burrow::pidfile: '/var/run/burrow.pid'
 burrow::stdout_logfile: ''
 burrow::access_control_allow_origin: ''
@@ -62,3 +62,4 @@ burrow::manage_consumers: true
 burrow::consumers: []
 burrow::manage_notifiers: false
 burrow::notifiers: []
+burrow::manage_service: false

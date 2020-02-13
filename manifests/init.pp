@@ -14,8 +14,8 @@
 # @param group
 #   Group for file ownership/service. Defaults to 'root'.
 #
-# @param config_file
-#   Path and name for burrow config file.  Defaults to '/etc/burrow/config'.
+# @param config_dir
+#   Path for burrow config file.  Defaults to '/etc/burrow'.
 #
 # @param pidfile
 #   The path and filename to store the PID of the running process in. Defaults to '/var/run/burrow.pid'.
@@ -199,11 +199,14 @@
 # @param notifiers
 #   An array of notifiers.
 #
+# @param manage_service
+#   Whether to run burrow as a system service.  Defaults to false.
+#
 class burrow (
   String $version,
   String $user,
   String $group,
-  String $config_file,
+  String $config_dir,
   Data $pidfile,
   Data $stdout_logfile,
   String $access_control_allow_origin,
@@ -263,6 +266,7 @@ class burrow (
   Array[Data] $consumers,
   Boolean $manage_notifiers,
   Array[Data] $notifiers,
+  Boolean $manage_service,
 ){
 
   if empty($zookeeper_servers) {
@@ -310,7 +314,7 @@ class burrow (
   }
 
   class { 'burrow::config':
-    config_file                 => $config_file,
+    config_dir                  => $config_dir,
     user                        => $user,
     group                       => $group,
     pidfile                     => $pidfile,
@@ -375,11 +379,21 @@ class burrow (
   }
   contain 'burrow::config'
 
-  class { 'burrow::service':
-  }
+  if $manage_service {
+    class { 'burrow::service':
+      user        => $user,
+      group       => $group,
+      config_dir  => $config_dir,
+      pidfile     => $pidfile,
+    }
+    contain 'burrow::service'
 
-  Class['burrow::install']
-  -> Class['burrow::config']
-  ~> Class['burrow::service']
+    Class['burrow::install']
+    -> Class['burrow::config']
+    ~> Class['burrow::service']
+  } else {
+    Class['burrow::install']
+    -> Class['burrow::config']
+  }
 
 }

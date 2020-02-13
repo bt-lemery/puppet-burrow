@@ -7,7 +7,7 @@
 class burrow::config (
   $user,
   $group,
-  $config_file,
+  $config_dir,
   $pidfile,
   $stdout_logfile,
   $access_control_allow_origin,
@@ -131,14 +131,12 @@ class burrow::config (
   'notifiers'                   => $notifiers,
   }
 
-  file { $config_file:
+  file { "${config_dir}/burrow.toml":
     owner => $user,
     group => $group,
     mode  => '0644',
-    content => epp('burrow/config.epp', $_config),
+    content => epp('burrow/config.yaml.epp', $_config),
   }
-
-  $config_file_dir = dirname($config_file)
 
   $_default_templates = [
     'default-email.tmpl',
@@ -148,7 +146,7 @@ class burrow::config (
     'default-slack-post.tmpl',
   ]
 
-  file { $config_file_dir:
+  file { $config_dir:
     ensure => directory,
     owner  => $user,
     group  => $group,
@@ -156,12 +154,12 @@ class burrow::config (
   }
 
   $_default_templates.each |$template| {
-    file { "${config_file_dir}/${template}":
+    file { "${config_dir}/${template}":
       owner   => $user,
       group   => $group,
       mode    => '0755',
       source  => "puppet:///modules/burrow/${template}",
-      require => File[$config_file_dir],
+      require => File[$config_dir],
     }
   }
 
