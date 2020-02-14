@@ -226,7 +226,7 @@ class-name="<%= $notifier[class-name] %>"
 interval=<%= $notifier[interval] %>
 <% } -%>
 <% if $notifier[threshold] { -%>
-interval=<%= $notifier[threshold] %>
+threshold=<%= $notifier[threshold] %>
 <% } -%>
 <% if $notifier[group-whitelist] { -%>
 group-whitelist="<%= $notifier[group-whitelist] %>"
