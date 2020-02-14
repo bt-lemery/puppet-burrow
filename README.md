@@ -33,9 +33,9 @@ You should be able to use this module to install and config Burrow with a minima
 
 ```
 class {'::burrow':
-  zookeeper_servers      => [ 'localhost:2081', 'localhost:2082', 'localhost:2083', ],
+  zookeeper_servers      => '[ \'localhost:2081\', \'localhost:2082\', \'localhost:2083\', ]',
   manage_cluster_profile => true,
-  cluster_servers        => [ 'localhost:3000', 'localhost:3001', ],
+  cluster_servers        => '[ \'localhost:3000\', \'localhost:3001\', ]',
    manage_consumers      => true,
    consumers             => [
      {
@@ -58,7 +58,7 @@ A complex example:
 ```
  class { '::burrow':
    version                   => '1.3.2',
-   zookeeper_servers         => [ 'localhost:2081', 'localhost:2082', 'localhost:2083', ],
+   zookeeper_servers         => '[ \'localhost:2081\', \'localhost:2082\', \'localhost:2083\', ]',
    manage_client_profile     => true,
    manage_tls_profile        => true,
    tls_certfile              => '/etc/pki/tls/mycert.cert',
@@ -71,7 +71,7 @@ A complex example:
    manage_storage_profile    => true,
    manage_evaluator_profile  => true,
    manage_cluster_profile    => true,
-   cluster_servers           => [ 'localhost:3000', 'localhost:3001', ],
+   cluster_servers           => '[ \'localhost:3000\', \'localhost:3001\', ]',
    manage_consumers          => true,
    consumers                 => [
      {
@@ -133,5 +133,6 @@ A complex example:
        'password'        => 'secret',
      },
    ],
+   manage_service            => true,
  }
 ```

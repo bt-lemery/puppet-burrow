@@ -13,7 +13,7 @@ burrow::logging_maxbackups: 10
 burrow::logging_maxage: 30
 burrow::logging_use_localtime: false
 burrow::logging_use_compression: false
-burrow::zookeeper_servers: []
+burrow::zookeeper_servers: ''
 burrow::zookeeper_timeout: 6
 burrow::zookeeper_root_path: '/burrow/notifier'
 burrow::manage_client_profile: false
@@ -54,7 +54,7 @@ burrow::evaluator_minimum_complete: '0.0'
 burrow::manage_cluster_profile: true
 burrow::cluster_subheading: 'mycluster'
 burrow::cluster_class_name: 'kafka'
-burrow::cluster_servers: []
+burrow::cluster_servers: ''
 burrow::cluster_client_profile: ''
 burrow::cluster_topic_refresh: 60
 burrow::cluster_offset_refresh: 10

@@ -48,7 +48,7 @@
 #   If true, compress rotated log files. Defaults to false.
 #
 # @param zookeeper_servers
-#   An array of strings in the form "hostname:port" that point to the servers in the Zookeeper ensemble. At least one is required.
+#   A string in the form '[\'hostname:port\']' that points to the servers in the Zookeeper ensemble. At least one is required.
 #
 # @param zookeeper_timeout
 #   The expiration timeout for Zookeeper sessions, in seconds. Defaults to 6.
@@ -176,7 +176,7 @@
 #   Name of cluster module. The only permitted value is 'kafka'.
 #
 # @param cluster_servers
-#   An array of strings in the form "hostname:port" that point to the servers in the Kafka cluster. At least one is required.
+#   A string in the form '[\'hostname:port\']' that points to the servers in the Kafka cluster. At least one is required.
 #
 # @param cluster_client_profile
 #   The name of a configured client-profile section. If no profile is specified, a default configuration for the client will be used. Defaults to ''.
@@ -217,7 +217,7 @@ class burrow (
   Integer $logging_maxage,
   Boolean $logging_use_localtime,
   Boolean $logging_use_compression,
-  Array[String] $zookeeper_servers,
+  String $zookeeper_servers,
   Integer $zookeeper_timeout,
   Data $zookeeper_root_path,
   Boolean $manage_client_profile,
@@ -258,7 +258,7 @@ class burrow (
   Boolean $manage_cluster_profile,
   Data $cluster_subheading,
   String $cluster_class_name,
-  Array[String] $cluster_servers,
+  String $cluster_servers,
   String $cluster_client_profile,
   Integer $cluster_topic_refresh,
   Integer $cluster_offset_refresh,

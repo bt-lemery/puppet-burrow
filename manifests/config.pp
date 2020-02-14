@@ -135,7 +135,7 @@ class burrow::config (
     owner => $user,
     group => $group,
     mode  => '0644',
-    content => epp('burrow/config.yaml.epp', $_config),
+    content => epp('burrow/config.toml.epp', $_config),
   }
 
   $_default_templates = [
