@@ -41,11 +41,10 @@ class {'::burrow':
      {
        'subheading'      => 'local',
        'class-name'      => 'kafka',
-       'cluster'         => 'foo',
-       'servers'         => [ 'localhost:3001', 'localhost:3001' ],
+       'cluster'         => 'mycluster',
+       'servers'         => '[ \'localhost:3001\', \'localhost:3001\' ]',
        'group-blacklist' => "^(console-consumer-|python-kafka-consumer-|quick-).*$",
        'group-whitelist' => "",
-       'client-profile'  => "test",
      },
    ],
 }
@@ -77,16 +76,16 @@ A complex example:
      {
        'subheading'      => 'local',
        'class-name'      => 'kafka',
-       'cluster'         => 'foo',
+       'cluster'         => 'mycluster',
        'servers'         => '[ \'localhost:3001\', \'localhost:3001\' ]',
        'group-blacklist' => "^(console-consumer-|python-kafka-consumer-|quick-).*$",
        'group-whitelist' => "",
-       'client-profile'  => "test",
+       'client-profile'  => "myclient",
      },
      {
        'subheading'        => 'local_zk',
        'class-name'        => 'kafka_zk',
-       'cluster'           => 'foo',
+       'cluster'           => 'mycluster',
        'servers'           => '[ \'localhost:2081\', \'localhost:2082\', \'localhost:2083\', ]',
        'group-blacklist'   => "^(console-consumer-|python-kafka-consumer-|quick-).*$",
        'group-whitelist'   => "",
