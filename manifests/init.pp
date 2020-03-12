@@ -94,11 +94,12 @@
 #
 # @param tls_no_verify
 #   	If true, do not validate the trust of the certificate sent by the other side of this connection.  Defaults to false.
+#
 # @param manage_sasl_profile
-#   Whether to use this module to manage a TLS profile.  Defaults to false.
+#   Whether to use this module to manage a SASL profile.  Defaults to false.
 #
 # @param sasl_subheading
-#   Unique subheading name for TLS profile.  Defaults to 'mysaslprofile'.
+#   Unique subheading name for SASL profile.  Defaults to 'mysaslprofile'.
 #
 # @param sasl_username
 #   The username to use for authentication. Required if using this module to manage a SASL profile.
