@@ -65,7 +65,7 @@
 # @param client_kafka_version
 #   The client version of Kafka to support.
 #   Valid versions are: 0.8, 0.8.0, 0.8.1, 0.8.2, 0.9, 0.9.0, 0.9.0.0, 0.9.0.1, 0.10, 0.10.0, 0.10.0.0, 0.10.0.1, 0.10.1, 0.10.1.0, 0.10.2, 0.10.2.0, 0.11.0,
-#   0.11.0.1, 0.11.0.2, 1.0.0, 1.0.1, 1.0.2, 1.1.0, 1.1.1.  Defaults to 0.8.
+#   0.11.0.1, 0.11.0.2, 1.0.0, 1.0.1, 1.0.2, 1.1.0, 1.1.1, 2.4.0. Defaults to 0.8.
 #
 # @param client_id
 #   A string to be passed to Kafka as the client ID.  Defaults to 'burrow-lagchecker'.
