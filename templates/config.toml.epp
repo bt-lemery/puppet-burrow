@@ -110,7 +110,7 @@ keyfile="<%= $tls_keyfile %>"
 cafile="<%= $tls_cafile %>"
 <% } -%>
 <% if $tls_no_verify { -%>
-no-verify=<%= $tls_no_verify %>
+noverify=<%= $tls_no_verify %>
 <% } -%>
 <% } -%>
 
